@@ -1,9 +1,7 @@
 import streamlit as st
 from dotenv import load_dotenv
 import os
-#from pdf_processor import extract_text_from_pdf
-from pdf_processor_ocr import extract_text_from_pdf
-from pdf_processor_ocr import pdf_has_images 
+from pdf_processor import extract_text_from_pdf
 
 from text_splitter import split_text
 from vector_store import store_vectors
@@ -30,9 +28,6 @@ if uploaded_files:
     # Rest of your existing code stays the same
     chunks = split_text(all_text)
     vector_index = store_vectors(chunks)
-    print(f"Total chunks passed to vector store: {len(chunks)}")
-    docs = vector_index.similarity_search(question)
-    print(f"Docs retrieved for question: {len(docs)}")
 
     st.success("All PDFs processed. Ask a question!")
 
@@ -41,4 +36,3 @@ if uploaded_files:
         with st.spinner("Thinking..."):
             answer = get_answer(vector_index, question)
             st.markdown(f"**Answer:** {answer}")
-
